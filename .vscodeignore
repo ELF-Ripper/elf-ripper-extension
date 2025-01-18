@@ -1,0 +1,22 @@
+# Exclude unnecessary folders
+.vscode/**
+.devcontainer/**
+.github/**
+out/**
+node_modules/**
+
+# Exclude source code and other unnecessary files
+src/**
+test/**
+scripts/**
+
+# Exclude other specific configuration and unnecessary files
+.gitignore
+.yarnrc
+.dockerignore
+webpack.config.js
+jest.config.js
+postcss.config.js
+tailwind.config.js
+tsconfig.json
+vsc-extension-quickstart.md

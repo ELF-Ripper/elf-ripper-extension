@@ -1,0 +1,31 @@
+{
+  "name": "ELF-Ripper Dev Container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash"
+      },
+      "extensions": [
+        "amodio.tsl-problem-matcher", //TypeScript + Webpack Problem Matchers
+        "yoavbls.pretty-ts-errors", // Pretty TypeScript Errors
+        "stringham.move-ts", // Move TS
+        "pmneo.tsimporter", // TypeScript Importer
+        "dbaeumer.vscode-eslint", //  ESLint
+        "esbenp.prettier-vscode", // Prettier - Code formatter
+        "christian-kohler.path-intellisense", // Path Intellisense
+        "VisualStudioExptTeam.vscodeintellicode", // IntelliCode
+        "bradlc.vscode-tailwindcss", // Tailwind CSS IntelliSense
+        "rodrigovallades.es7-react-js-snippets", // ES7 React/Redux/GraphQL/React-Native snippets
+        "ms-vscode.cmake-tools", // CMake
+        "ms-vscode.cpptools", // C/C++
+        "Orta.vscode-jest", // Jest
+        "mhutchie.git-graph" // Git Graph
+      ]
+    }
+  },
+  "remoteUser": "root"
+}

@@ -1,0 +1,159 @@
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;700;900&family=Plus+Jakarta+Sans:wght@400;500;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 48%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --font-plus-jakarta-sans: "Plus Jakarta Sans", sans-serif;
+    --radius: 1rem;
+  }
+
+  /* Apply global border color and font family to all elements */
+  * {
+    @apply border-border;
+    font-family: var(--font-plus-jakarta-sans), sans-serif;
+  }
+
+  /* Body styles */
+  body {
+    @apply bg-background text-foreground;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  /* Apply Plus Jakarta Sans to most text elements */
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  button,
+  Tooltip,
+  input,
+  table,
+  header,
+  nav,
+  DropdownMenu {
+    font-family: var(--font-plus-jakarta-sans), sans-serif;
+  }
+
+  /* Table-specific styles */
+  table th {
+    font-family: var(--font-plus-jakarta-sans);
+  }
+
+  table td {
+    color: hsl(210, 40%, 85%); /* Slightly darker, less bright text color */
+    font-family: var(--font-plus-jakarta-sans);
+  }
+
+  .header-row {
+    @apply bg-secondary/50;
+  }
+
+  /* Component-specific classes */
+  .sorting-button {
+    @apply flex items-center transition-all duration-300 ease-in-out;
+  }
+
+  .sorting-arrow {
+    @apply ml-2 h-4 w-4 transform transition-all duration-300 ease-in-out;
+  }
+
+  .hidden-icon {
+    @apply opacity-0;
+  }
+
+  .expand-collapse-rotate {
+    @apply rotate-0;
+  }
+
+  .expand-collapse-rotate-open {
+    @apply rotate-90;
+  }
+
+  .expand-collapse-icon {
+    @apply ml-2 h-4 w-4 transform transition-transform duration-300 ease-in-out;
+  }
+
+  .visible-icon {
+    @apply opacity-100;
+  }
+
+  .no-hover:hover {
+    background-color: inherit !important;
+    cursor: default !important;
+  }
+
+  /* Slightly increase padding for table headers and rows */
+  .panel-webview table th,
+  .panel-webview table td {
+    padding: 3px 5px;
+    font-size: 0.8rem;
+    border-color: var(--border); /* Ensure border inherits the theme color */
+  }
+
+  /* Adjust table header for slightly thicker appearance */
+  .panel-webview table th {
+    font-weight: 600;
+    height: 26px;
+    border-color: var(--border); /* Ensure border inherits the theme color */
+  }
+
+  /* Adjust table rows to slightly increase thickness */
+  .panel-webview .table-row {
+    height: 26px;
+  }
+
+  .panel-webview .progress-bar {
+    height: 9px;
+    border-radius: 4px;
+  }
+
+  .panel-webview button,
+  .panel-webview input,
+  .panel-webview select {
+    height: 24px;
+  }
+
+  /* Dashboard tooltips */
+  .tooltip {
+    color: white !important;
+    background-color: #202c3c !important;
+    transition: opacity 10ms !important;
+  }
+
+  /* Specific style for no results text in data tables */
+  .data-table-no-results {
+    @apply h-24 text-center text-sm text-gray-500;
+  }
+}

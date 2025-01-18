@@ -1,0 +1,1877 @@
+import fs from "fs";
+import { FileInfo } from "../../../../src/binary-parser/types";
+import { SymbolTables } from "../../../../src/binary-parser/parsers/elf/symbol-tables";
+import { mockedSections32, mockedSections64 } from "./mockedData";
+
+describe("Symbol Tables Parser", () => {
+  test.each([
+    [
+      "ELF64 little endian",
+      "./test/C_Samples/hello",
+      mockedSections64,
+      {
+        dynsym: [
+          {
+            Header: { st_name: 0, st_value: 0, st_size: 0, st_info: 0, st_other: 0, st_shndx: 0 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 61, st_value: 0, st_size: 0, st_info: 32, st_other: 0, st_shndx: 0 },
+            Name: "_ITM_deregisterTMCloneTable",
+          },
+          {
+            Header: { st_name: 11, st_value: 0, st_size: 0, st_info: 18, st_other: 0, st_shndx: 0 },
+            Name: "puts",
+          },
+          {
+            Header: { st_name: 31, st_value: 0, st_size: 0, st_info: 18, st_other: 0, st_shndx: 0 },
+            Name: "__libc_start_main",
+          },
+          {
+            Header: { st_name: 89, st_value: 0, st_size: 0, st_info: 32, st_other: 0, st_shndx: 0 },
+            Name: "__gmon_start__",
+          },
+          {
+            Header: {
+              st_name: 104,
+              st_value: 0,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "_ITM_registerTMCloneTable",
+          },
+          {
+            Header: { st_name: 16, st_value: 0, st_size: 0, st_info: 34, st_other: 0, st_shndx: 0 },
+            Name: "__cxa_finalize",
+          },
+        ],
+        symtab: [
+          {
+            Header: { st_name: 0, st_value: 0, st_size: 0, st_info: 0, st_other: 0, st_shndx: 0 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 792, st_size: 0, st_info: 3, st_other: 0, st_shndx: 1 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 824, st_size: 0, st_info: 3, st_other: 0, st_shndx: 2 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 856, st_size: 0, st_info: 3, st_other: 0, st_shndx: 3 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 892, st_size: 0, st_info: 3, st_other: 0, st_shndx: 4 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 928, st_size: 0, st_info: 3, st_other: 0, st_shndx: 5 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 968, st_size: 0, st_info: 3, st_other: 0, st_shndx: 6 },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1136,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 7,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1266,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 8,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1280,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 9,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1312,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 10,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1504,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 11,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 4096,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 12,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 4128,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 4160,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 14,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 4176,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 15,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 4192,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 4584,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 17,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 8192,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 18,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 8212,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 19,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 8280,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 20,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 15800,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 21,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 15808,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 15816,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 16312,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 24,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 16384,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 25,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 16400,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 26,
+            },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 0, st_size: 0, st_info: 3, st_other: 0, st_shndx: 27 },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 1,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "crtstuff.c",
+          },
+          {
+            Header: {
+              st_name: 12,
+              st_value: 4240,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "deregister_tm_clones",
+          },
+          {
+            Header: {
+              st_name: 14,
+              st_value: 4288,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "register_tm_clones",
+          },
+          {
+            Header: {
+              st_name: 33,
+              st_value: 4352,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "__do_global_dtors_aux",
+          },
+          {
+            Header: {
+              st_name: 55,
+              st_value: 16400,
+              st_size: 1,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 26,
+            },
+            Name: "completed.8061",
+          },
+          {
+            Header: {
+              st_name: 70,
+              st_value: 15808,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "__do_global_dtors_aux_fini_array_entry",
+          },
+          {
+            Header: {
+              st_name: 109,
+              st_value: 4416,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "frame_dummy",
+          },
+          {
+            Header: {
+              st_name: 121,
+              st_value: 15800,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 21,
+            },
+            Name: "__frame_dummy_init_array_entry",
+          },
+          {
+            Header: {
+              st_name: 152,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "Hello.c",
+          },
+          {
+            Header: {
+              st_name: 1,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "crtstuff.c",
+          },
+          {
+            Header: {
+              st_name: 160,
+              st_value: 8540,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 20,
+            },
+            Name: "__FRAME_END__",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 174,
+              st_value: 15808,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 21,
+            },
+            Name: "__init_array_end",
+          },
+          {
+            Header: {
+              st_name: 191,
+              st_value: 15816,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "_DYNAMIC",
+          },
+          {
+            Header: {
+              st_name: 200,
+              st_value: 15800,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 21,
+            },
+            Name: "__init_array_start",
+          },
+          {
+            Header: {
+              st_name: 219,
+              st_value: 8212,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 19,
+            },
+            Name: "__GNU_EH_FRAME_HDR",
+          },
+          {
+            Header: {
+              st_name: 238,
+              st_value: 16312,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 24,
+            },
+            Name: "_GLOBAL_OFFSET_TABLE_",
+          },
+          {
+            Header: {
+              st_name: 426,
+              st_value: 4096,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 12,
+            },
+            Name: "_init",
+          },
+          {
+            Header: {
+              st_name: 260,
+              st_value: 4576,
+              st_size: 5,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "__libc_csu_fini",
+          },
+          {
+            Header: {
+              st_name: 276,
+              st_value: 0,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "_ITM_deregisterTMCloneTable",
+          },
+          {
+            Header: {
+              st_name: 362,
+              st_value: 16384,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 25,
+            },
+            Name: "data_start",
+          },
+          {
+            Header: {
+              st_name: 304,
+              st_value: 0,
+              st_size: 0,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "puts@@GLIBC_2.2.5",
+          },
+          {
+            Header: {
+              st_name: 322,
+              st_value: 16400,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 25,
+            },
+            Name: "_edata",
+          },
+          {
+            Header: {
+              st_name: 270,
+              st_value: 4584,
+              st_size: 0,
+              st_info: 18,
+              st_other: 2,
+              st_shndx: 17,
+            },
+            Name: "_fini",
+          },
+          {
+            Header: {
+              st_name: 329,
+              st_value: 0,
+              st_size: 0,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "__libc_start_main@@GLIBC_2.2.5",
+          },
+          {
+            Header: {
+              st_name: 360,
+              st_value: 16384,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 25,
+            },
+            Name: "__data_start",
+          },
+          {
+            Header: {
+              st_name: 373,
+              st_value: 0,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "__gmon_start__",
+          },
+          {
+            Header: {
+              st_name: 388,
+              st_value: 16392,
+              st_size: 0,
+              st_info: 17,
+              st_other: 2,
+              st_shndx: 25,
+            },
+            Name: "__dso_handle",
+          },
+          {
+            Header: {
+              st_name: 401,
+              st_value: 8192,
+              st_size: 4,
+              st_info: 17,
+              st_other: 0,
+              st_shndx: 18,
+            },
+            Name: "_IO_stdin_used",
+          },
+          {
+            Header: {
+              st_name: 416,
+              st_value: 4464,
+              st_size: 101,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "__libc_csu_init",
+          },
+          {
+            Header: {
+              st_name: 186,
+              st_value: 16408,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 26,
+            },
+            Name: "_end",
+          },
+          {
+            Header: {
+              st_name: 366,
+              st_value: 4192,
+              st_size: 47,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "_start",
+          },
+          {
+            Header: {
+              st_name: 432,
+              st_value: 16400,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 26,
+            },
+            Name: "__bss_start",
+          },
+          {
+            Header: {
+              st_name: 444,
+              st_value: 4425,
+              st_size: 27,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "main",
+          },
+          {
+            Header: {
+              st_name: 449,
+              st_value: 16400,
+              st_size: 0,
+              st_info: 17,
+              st_other: 2,
+              st_shndx: 25,
+            },
+            Name: "__TMC_END__",
+          },
+          {
+            Header: {
+              st_name: 461,
+              st_value: 0,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "_ITM_registerTMCloneTable",
+          },
+          {
+            Header: {
+              st_name: 487,
+              st_value: 0,
+              st_size: 0,
+              st_info: 34,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "__cxa_finalize@@GLIBC_2.2.5",
+          },
+        ],
+      },
+    ],
+    [
+      "ELF32 big endian",
+      "./test/C_Samples/hello_arm32",
+      mockedSections32,
+      {
+        dynsym: [
+          {
+            Header: { st_name: 0, st_value: 0, st_size: 0, st_info: 0, st_other: 0, st_shndx: 0 },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 928,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 11,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 69632,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "",
+          },
+          {
+            Header: { st_name: 22, st_value: 0, st_size: 0, st_info: 34, st_other: 0, st_shndx: 0 },
+            Name: "__cxa_finalize",
+          },
+          {
+            Header: { st_name: 65, st_value: 0, st_size: 0, st_info: 32, st_other: 0, st_shndx: 0 },
+            Name: "_ITM_deregisterTMCloneTable",
+          },
+          {
+            Header: { st_name: 11, st_value: 0, st_size: 0, st_info: 18, st_other: 0, st_shndx: 0 },
+            Name: "puts",
+          },
+          {
+            Header: { st_name: 37, st_value: 0, st_size: 0, st_info: 18, st_other: 0, st_shndx: 0 },
+            Name: "__libc_start_main",
+          },
+          {
+            Header: { st_name: 93, st_value: 0, st_size: 0, st_info: 32, st_other: 0, st_shndx: 0 },
+            Name: "__gmon_start__",
+          },
+          {
+            Header: {
+              st_name: 108,
+              st_value: 0,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "_ITM_registerTMCloneTable",
+          },
+          {
+            Header: { st_name: 16, st_value: 0, st_size: 0, st_info: 18, st_other: 0, st_shndx: 0 },
+            Name: "abort",
+          },
+        ],
+        symtab: [
+          {
+            Header: { st_name: 0, st_value: 0, st_size: 0, st_info: 0, st_other: 0, st_shndx: 0 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 340, st_size: 0, st_info: 3, st_other: 0, st_shndx: 1 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 368, st_size: 0, st_info: 3, st_other: 0, st_shndx: 2 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 404, st_size: 0, st_info: 3, st_other: 0, st_shndx: 3 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 436, st_size: 0, st_info: 3, st_other: 0, st_shndx: 4 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 460, st_size: 0, st_info: 3, st_other: 0, st_shndx: 5 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 620, st_size: 0, st_info: 3, st_other: 0, st_shndx: 6 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 754, st_size: 0, st_info: 3, st_other: 0, st_shndx: 7 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 776, st_size: 0, st_info: 3, st_other: 0, st_shndx: 8 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 808, st_size: 0, st_info: 3, st_other: 0, st_shndx: 9 },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 888,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 10,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 928,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 11,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 940,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 12,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1020,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1384,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 14,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1392,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 15,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1412,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 1420,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 17,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 69316,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 18,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 69320,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 19,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 69324,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 20,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 69572,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 21,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 69632,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 69640,
+              st_size: 0,
+              st_info: 3,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 0, st_size: 0, st_info: 3, st_other: 0, st_shndx: 24 },
+            Name: "",
+          },
+          {
+            Header: { st_name: 0, st_value: 0, st_size: 0, st_info: 3, st_other: 0, st_shndx: 25 },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 1,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "/usr/lib/gcc-cross/arm-linux-gnueabihf/9/../../../../arm-linux-gnueabihf/lib/../lib/Scrt1.o",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 404,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 3,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 96,
+              st_value: 1020,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$t",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1076,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1412,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 16,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1392,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 15,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 69632,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 99,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "/usr/lib/gcc-cross/arm-linux-gnueabihf/9/../../../../arm-linux-gnueabihf/lib/../lib/crti.o",
+          },
+          {
+            Header: {
+              st_name: 190,
+              st_value: 1092,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$a",
+          },
+          {
+            Header: {
+              st_name: 193,
+              st_value: 1092,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "call_weak_fn",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1120,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 190,
+              st_value: 928,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 11,
+            },
+            Name: "$a",
+          },
+          {
+            Header: {
+              st_name: 190,
+              st_value: 1384,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 14,
+            },
+            Name: "$a",
+          },
+          {
+            Header: {
+              st_name: 206,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "/usr/lib/gcc-cross/arm-linux-gnueabihf/9/../../../../arm-linux-gnueabihf/lib/../lib/crtn.o",
+          },
+          {
+            Header: {
+              st_name: 190,
+              st_value: 936,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 11,
+            },
+            Name: "$a",
+          },
+          {
+            Header: {
+              st_name: 190,
+              st_value: 1388,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 14,
+            },
+            Name: "$a",
+          },
+          {
+            Header: {
+              st_name: 297,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "crtstuff.c",
+          },
+          {
+            Header: {
+              st_name: 96,
+              st_value: 1128,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$t",
+          },
+          {
+            Header: {
+              st_name: 308,
+              st_value: 1129,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "deregister_tm_clones",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1156,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 96,
+              st_value: 1172,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$t",
+          },
+          {
+            Header: {
+              st_name: 310,
+              st_value: 1173,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "register_tm_clones",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1208,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 69636,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 96,
+              st_value: 1224,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$t",
+          },
+          {
+            Header: {
+              st_name: 329,
+              st_value: 1225,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "__do_global_dtors_aux",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1268,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 351,
+              st_value: 69640,
+              st_size: 1,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "completed.11535",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 69320,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 19,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 367,
+              st_value: 69320,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 19,
+            },
+            Name: "__do_global_dtors_aux_fini_array_entry",
+          },
+          {
+            Header: {
+              st_name: 96,
+              st_value: 1288,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$t",
+          },
+          {
+            Header: {
+              st_name: 406,
+              st_value: 1289,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "frame_dummy",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 69316,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 18,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 418,
+              st_value: 69316,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 18,
+            },
+            Name: "__frame_dummy_init_array_entry",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 69640,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 449,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "hello.c",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1396,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 15,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 96,
+              st_value: 1292,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$t",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1312,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 457,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "elf-init.oS",
+          },
+          {
+            Header: {
+              st_name: 96,
+              st_value: 1316,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$t",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1372,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 96,
+              st_value: 1380,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "$t",
+          },
+          {
+            Header: {
+              st_name: 297,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "crtstuff.c",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 1420,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 17,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 469,
+              st_value: 1420,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 17,
+            },
+            Name: "__FRAME_END__",
+          },
+          {
+            Header: {
+              st_name: 0,
+              st_value: 0,
+              st_size: 0,
+              st_info: 4,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "",
+          },
+          {
+            Header: {
+              st_name: 483,
+              st_value: 69320,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 18,
+            },
+            Name: "__init_array_end",
+          },
+          {
+            Header: {
+              st_name: 500,
+              st_value: 69324,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "_DYNAMIC",
+          },
+          {
+            Header: {
+              st_name: 509,
+              st_value: 69316,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 18,
+            },
+            Name: "__init_array_start",
+          },
+          {
+            Header: {
+              st_name: 528,
+              st_value: 69572,
+              st_size: 0,
+              st_info: 1,
+              st_other: 0,
+              st_shndx: 65521,
+            },
+            Name: "_GLOBAL_OFFSET_TABLE_",
+          },
+          {
+            Header: {
+              st_name: 764,
+              st_value: 928,
+              st_size: 0,
+              st_info: 2,
+              st_other: 0,
+              st_shndx: 11,
+            },
+            Name: "_init",
+          },
+          {
+            Header: {
+              st_name: 190,
+              st_value: 940,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 12,
+            },
+            Name: "$a",
+          },
+          {
+            Header: {
+              st_name: 93,
+              st_value: 956,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 12,
+            },
+            Name: "$d",
+          },
+          {
+            Header: {
+              st_name: 190,
+              st_value: 960,
+              st_size: 0,
+              st_info: 0,
+              st_other: 0,
+              st_shndx: 12,
+            },
+            Name: "$a",
+          },
+          {
+            Header: {
+              st_name: 550,
+              st_value: 1381,
+              st_size: 2,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "__libc_csu_fini",
+          },
+          {
+            Header: {
+              st_name: 566,
+              st_value: 0,
+              st_size: 0,
+              st_info: 34,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "__cxa_finalize@@GLIBC_2.4",
+          },
+          {
+            Header: {
+              st_name: 592,
+              st_value: 0,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "_ITM_deregisterTMCloneTable",
+          },
+          {
+            Header: {
+              st_name: 655,
+              st_value: 69632,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "data_start",
+          },
+          {
+            Header: {
+              st_name: 620,
+              st_value: 69640,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "__bss_start__",
+          },
+          {
+            Header: {
+              st_name: 642,
+              st_value: 69644,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "_bss_end__",
+          },
+          {
+            Header: {
+              st_name: 634,
+              st_value: 69640,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "_edata",
+          },
+          {
+            Header: {
+              st_name: 560,
+              st_value: 1384,
+              st_size: 0,
+              st_info: 18,
+              st_other: 2,
+              st_shndx: 14,
+            },
+            Name: "_fini",
+          },
+          {
+            Header: {
+              st_name: 641,
+              st_value: 69644,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "__bss_end__",
+          },
+          {
+            Header: {
+              st_name: 653,
+              st_value: 69632,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 22,
+            },
+            Name: "__data_start",
+          },
+          {
+            Header: {
+              st_name: 666,
+              st_value: 0,
+              st_size: 0,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "puts@@GLIBC_2.4",
+          },
+          {
+            Header: {
+              st_name: 682,
+              st_value: 0,
+              st_size: 0,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "__libc_start_main@@GLIBC_2.4",
+          },
+          {
+            Header: {
+              st_name: 711,
+              st_value: 0,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "__gmon_start__",
+          },
+          {
+            Header: {
+              st_name: 726,
+              st_value: 69636,
+              st_size: 0,
+              st_info: 17,
+              st_other: 2,
+              st_shndx: 22,
+            },
+            Name: "__dso_handle",
+          },
+          {
+            Header: {
+              st_name: 739,
+              st_value: 1392,
+              st_size: 4,
+              st_info: 17,
+              st_other: 0,
+              st_shndx: 15,
+            },
+            Name: "_IO_stdin_used",
+          },
+          {
+            Header: {
+              st_name: 754,
+              st_value: 1317,
+              st_size: 64,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "__libc_csu_init",
+          },
+          {
+            Header: {
+              st_name: 495,
+              st_value: 69644,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "_end",
+          },
+          {
+            Header: {
+              st_name: 659,
+              st_value: 1021,
+              st_size: 0,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "_start",
+          },
+          {
+            Header: {
+              st_name: 770,
+              st_value: 69644,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "__end__",
+          },
+          {
+            Header: {
+              st_name: 778,
+              st_value: 69640,
+              st_size: 0,
+              st_info: 16,
+              st_other: 0,
+              st_shndx: 23,
+            },
+            Name: "__bss_start",
+          },
+          {
+            Header: {
+              st_name: 790,
+              st_value: 1293,
+              st_size: 24,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 13,
+            },
+            Name: "main",
+          },
+          {
+            Header: {
+              st_name: 795,
+              st_value: 69640,
+              st_size: 0,
+              st_info: 17,
+              st_other: 2,
+              st_shndx: 22,
+            },
+            Name: "__TMC_END__",
+          },
+          {
+            Header: {
+              st_name: 807,
+              st_value: 0,
+              st_size: 0,
+              st_info: 32,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "_ITM_registerTMCloneTable",
+          },
+          {
+            Header: {
+              st_name: 833,
+              st_value: 0,
+              st_size: 0,
+              st_info: 18,
+              st_other: 0,
+              st_shndx: 0,
+            },
+            Name: "abort@@GLIBC_2.4",
+          },
+        ],
+      },
+    ],
+    // Add more test cases as needed...
+  ])(
+    "Parse method returns expected section headers for %s",
+    async (_, sampleFilePath, mockedSections, expectedData) => {
+      // Load the content of the sample ELF file
+      const fileContent = fs.readFileSync(sampleFilePath);
+
+      // Create a FileInfo object with sample file content
+      const elfDataMock: FileInfo = {
+        filePath: sampleFilePath,
+        fileContent: fileContent,
+      };
+
+      // Instantiate SymbolTables parser and call parse method
+      const parser = new SymbolTables(elfDataMock);
+      const parsedData = parser.parse(mockedSections);
+
+      // Assert parsed data matches expected data
+      expect(parsedData).toEqual(expectedData);
+    },
+  );
+});

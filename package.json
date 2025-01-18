@@ -1,0 +1,301 @@
+{
+  "name": "elf-ripper",
+  "displayName": "ELF-Ripper",
+  "description": "ELF Ripper: Analyze ELF files and firmware memory usage in embedded projects. Offers ELF parsing similar to 'readelf' and provides insights into memory allocation during firmware builds. Use this tool to optimize your firmware by understanding how your code utilizes memory resources.",
+  "version": "0.0.1",
+  "publisher": "ELF-Ripper-DevTeam",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ELF-Ripper/elf-ripper-extension"},
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.54.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [],
+  "main": "./dist/extension.bundle.js",
+  "contributes": {
+    "configuration": [
+      {
+        "type": "object",
+        "title": "ELF Ripper",
+        "properties": {
+          "elf-ripper.settings.configurationProvider": {
+            "type": "string",
+            "order": 1,
+            "default": "Default",
+            "enum": [
+              "Default",
+              "CMake"
+            ],
+            "markdownDescription": "**Set the Configuration Provider for the ELF Ripper.** \n\n- **Default**: Use the provided execution path setting to find ELF and MAP files.\n\n- **CMake**: Automatically handle the execution path by integrating with the CMake Tools plugin.\n\nFor detailed information, check the [Documentation](https://github.com/ELF-Ripper/elf-ripper-extension).\n"
+          },
+          "elf-ripper.settings.executionPath": {
+            "type": "string",
+            "order": 2,
+            "markdownDescription": "**Set the execution path.** \n\nThe execution path defines the location where the ELF Ripper will search for ELF and MAP files, which are essential for performing memory allocation analysis and debugging in firmware development.\n\n**Note:** This setting will be ignored if the `ConfigurationProvider` is not set to `Default`, as the execution path will be managed automatically.\n\n**Path Options:**\n\n- Absolute paths to directories or files (e.g., `/path/to/build/` or `/path/to/build/firmware.elf`).\n- Use `${workspaceFolder}` for workspace-relative paths (e.g., `${workspaceFolder}/build/`).\n- Use `${command:commandID}` to dynamically set the path based on command outputs."
+          },
+          "elf-ripper.settings.useMap": {
+            "type": "boolean",
+            "order": 3,
+            "default": true,
+            "markdownDescription": "**Enable or disable the use of a MAP file.** \n\nEnabling the use of a MAP file allows the ELF Ripper to perform a more comprehensive memory analysis, which is essential for debugging and optimizing embedded applications."
+          },
+          "elf-ripper.settings.useStatusBar": {
+            "type": "boolean",
+            "order": 4,
+            "default": true,
+            "markdownDescription": "**Enable or disable the Status Bar item.** \n\nUse this setting to toggle the status bar for quick access to the current build target."
+          }
+        }
+      }
+    ],
+    "commands": [
+      {
+        "command": "elf-ripper.command.selectElfFile",
+        "title": "ELF Ripper: Manually select ELF file",
+        "icon": "$(file-add)"
+      },
+      {
+        "command": "elf-ripper.command.selectMemoryFile",
+        "title": "ELF Ripper: Manually select Map file",
+        "icon": "$(file-add)"
+      },
+      {
+        "command": "elf-ripper.command.selectBuild",
+        "title": "ELF Ripper: Manually Select the targeted build"
+      },
+      {
+        "command": "elf-ripper.command.processFiles",
+        "title": "ELF Ripper: Process Files",
+        "icon": "$(debug-start)"
+      },
+      {
+        "command": "elf-ripper.command.openDashboard",
+        "title": "ELF Ripper: Open ELF Ripper Dashboard"
+      },
+      {
+        "command": "elf-ripper.command.clearPaths",
+        "title": "ELF Ripper: Clear Path/s",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "elf-ripper.command.openSettings",
+        "title": "ELF Ripper: Open Settings",
+        "icon": "$(settings-gear)"
+      },
+      {
+        "command": "elf-ripper.command.setExecutionPath",
+        "title": "ELF Ripper: Set the Execution Path",
+        "icon": "$(timeline-unpin)"
+      },
+      {
+        "command": "elf-ripper.command.refreshWorkspace",
+        "title": "ELF Ripper: Refresh Workspace",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "elf-ripper.command.openHelp",
+        "title": "ELF Ripper: Help",
+        "icon": "$(question)"
+      }
+    ],
+    "viewsContainers": {
+      "panel": [
+        {
+          "id": "pluginPanel",
+          "title": "ELF Ripper",
+          "icon": "$(selection)"
+        }
+      ],
+      "activitybar": [
+        {
+          "id": "pluginActivity",
+          "title": "ELF Ripper",
+          "icon": "$(octoface)"
+        }
+      ]
+    },
+    "views": {
+      "pluginPanel": [
+        {
+          "id": "elf-ripper-panel.view",
+          "name": "Build Analyzer",
+          "type": "webview"
+        }
+      ],
+      "pluginActivity": [
+        {
+          "id": "activitybar-menu-view",
+          "name": "Menu",
+          "contextualTitle": "ELF Ripper: Menu",
+          "icon": "$(menu)"
+        },
+        {
+          "id": "activitybar-target-view",
+          "name": "Target",
+          "contextualTitle": "ELF Ripper: Target",
+          "icon": "$(target)"
+        },
+        {
+          "id": "activitybar-workspace-view",
+          "name": "Workspace",
+          "contextualTitle": "ELF Ripper: Workspace",
+          "icon": "$(location)"
+        }
+      ]
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "elf-ripper.command.clearPaths",
+          "when": "view == activitybar-target-view",
+          "group": "navigation@0"
+        },
+        {
+          "command": "elf-ripper.command.processFiles",
+          "when": "view == activitybar-menu-view",
+          "group": "navigation@0"
+        },
+        {
+          "command": "elf-ripper.command.openHelp",
+          "when": "view == activitybar-menu-view",
+          "group": "navigation@1"
+        },
+        {
+          "command": "elf-ripper.command.openSettings",
+          "when": "view == activitybar-menu-view",
+          "group": "navigation@2"
+        },
+        {
+          "command": "elf-ripper.command.setExecutionPath",
+          "when": "view == activitybar-workspace-view",
+          "group": "navigation@0"
+        },
+        {
+          "command": "elf-ripper.command.refreshWorkspace",
+          "when": "view == activitybar-workspace-view",
+          "group": "navigation@1"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "elf-ripper.command.selectElfFile",
+          "when": "viewItem == elfTarget",
+          "group": "inline"
+        },
+        {
+          "command": "elf-ripper.command.selectMemoryFile",
+          "when": "viewItem == mapTarget",
+          "group": "inline"
+        },
+        {
+          "command": "elf-ripper.command.clearPaths",
+          "when": "viewItem == elfPath || viewItem == mapPath",
+          "group": "inline"
+        }
+      ],
+      "commandPalette": [
+        {
+          "command": "elf-ripper.command.clearPaths",
+          "when": "hidden"
+        },
+        {
+          "command": "elf-ripper.command.selectElfFile",
+          "when": "hidden"
+        },
+        {
+          "command": "elf-ripper.command.selectMemoryFile",
+          "when": "hidden"
+        },
+        {
+          "command": "elf-ripper.command.processFiles",
+          "when": "hidden"
+        },
+        {
+          "command": "elf-ripper.command.openSettings",
+          "when": "hidden"
+        },
+        {
+          "command": "elf-ripper.command.setExecutionPath",
+          "when": "hidden"
+        },
+        {
+          "command": "elf-ripper.command.refreshWorkspace",
+          "when": "hidden"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "webpack --mode production",
+    "watch": "webpack --watch --mode development",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run lint && npm run compile-tests",
+    "lint": "eslint src --ext ts,tsx",
+    "test": "jest",
+    "clean": "rimraf dist out",
+    "clean:all": "npm run clean && rimraf node_modules && npm cache clean --force && npm install"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/plugin-proposal-class-properties": "^7.18.6",
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-react": "^7.24.7",
+    "@babel/preset-typescript": "^7.24.7",
+    "@testing-library/jest-dom": "^6.4.6",
+    "@testing-library/react": "^16.0.0",
+    "@types/jest": "^29.5.12",
+    "@types/jest-cli": "^24.3.0",
+    "@types/node": "18.x",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/vscode": "^1.54.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^3.1.0",
+    "babel-loader": "^9.1.3",
+    "body-parser": "^1.20.2",
+    "css-loader": "^7.1.2",
+    "eslint": "^8.56.0",
+    "html-webpack-plugin": "^5.6.0",
+    "identity-obj-proxy": "^3.0.0",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "postcss-loader": "^8.1.1",
+    "rimraf": "^5.0.7",
+    "style-loader": "^4.0.0",
+    "ts-jest": "^29.1.4",
+    "typescript": "^5.4.5",
+    "webpack": "^5.92.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@radix-ui/react-collapsible": "^1.1.0",
+    "@radix-ui/react-dropdown-menu": "^2.1.1",
+    "@radix-ui/react-icons": "^1.3.0",
+    "@radix-ui/react-progress": "^1.1.0",
+    "@radix-ui/react-select": "^2.1.1",
+    "@radix-ui/react-tabs": "^1.1.0",
+    "@radix-ui/react-tooltip": "^1.1.2",
+    "@tanstack/react-table": "^8.19.2",
+    "autoprefixer": "^10.4.19",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.395.0",
+    "postcss": "^8.4.38",
+    "prettier": "^3.3.2",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.24.1",
+    "tailwind-merge": "^2.3.0",
+    "tailwindcss": "^3.4.4",
+    "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2"
+  }
+}
