@@ -1,0 +1,57 @@
+name: Deploy Extension
+
+on:
+  push:
+    tags:
+      - v.*.*.*
+
+jobs:
+  publish-extension:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Execute Permissions
+        run: chmod -R +x ./scripts
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Docker Image
+        run: |
+          docker pull ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest
+
+      - name: Deploy Extension
+        id: deploy-extension
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest \
+            bash -c "./scripts/deployer.sh ${{ secrets.MARKETPLACE_PAT }}"
+
+  zip-source-code:
+    runs-on: ubuntu-latest
+    needs: publish-extension
+    if: success()
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Create Source Code Archive
+        run: |
+          zip -r source-code.zip .
+
+      - name: Upload Source Code as Release Asset
+        uses: actions/upload-release-asset@v1
+        with:
+          upload_url: ${{ github.event.release.upload_url }}
+          asset_path: ./source-code.zip
+          asset_name: source-code.zip
+          asset_content_type: application/zip
