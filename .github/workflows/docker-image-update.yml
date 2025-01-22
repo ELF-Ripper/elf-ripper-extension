@@ -24,8 +24,8 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ghcr.io/elf-ripper/elf-ripper-dev-test-env:latest -f .devcontainer/Dockerfile .
+          docker build -t ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest -f .devcontainer/Dockerfile .
 
       - name: Push Docker image
         run: |
-          docker push ghcr.io/elf-ripper/elf-ripper-dev-test-env:latest
+          docker push ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest
