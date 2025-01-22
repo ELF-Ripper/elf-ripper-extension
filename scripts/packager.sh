@@ -12,4 +12,4 @@ export PATH=$PATH:/workspace/node_modules/@vscode/vsce
 # Package the VSCode extension,
 # It first runs the 'vscode:prepublish' script, which builds the extension using webpack in production mode.
 # The output is a packaged .vsix file, ready to be published or installed
-vsce package --allow-missing-repository
+vsce package

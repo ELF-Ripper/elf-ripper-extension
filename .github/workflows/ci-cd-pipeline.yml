@@ -24,14 +24,14 @@ jobs:
 
       - name: Pull Docker Image
         run: |
-          docker pull ghcr.io/elf-ripper/elf-ripper-dev-test-env:latest
+          docker pull ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest
 
       - name: Run Tests
         id: run-tests
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
-            ghcr.io/elf-ripper/elf-ripper-dev-test-env:latest \
+            ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest \
             bash -c "./scripts/tester.sh"
 
       - name: Package VSCode Extension
@@ -40,7 +40,7 @@ jobs:
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/workspace \
-            ghcr.io/elf-ripper/elf-ripper-dev-test-env:latest \
+            ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest \
             bash -c "./scripts/packager.sh"
 
       - name: Upload Packaged Extension
