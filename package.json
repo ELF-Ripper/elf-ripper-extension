@@ -1,18 +1,18 @@
 {
   "name": "elf-ripper",
   "displayName": "ELF-Ripper",
-  "description": "ELF Ripper: Analyze ELF files and firmware memory usage in embedded projects. Offers ELF parsing similar to 'readelf' and provides insights into memory allocation during firmware builds. Use this tool to optimize your firmware by understanding how your code utilizes memory resources.",
-  "version": "0.0.1",
+  "description": "An extension for analyzing ELF files and optimizing firmware memory usage in embedded projects, featuring ELF parsing similar to 'readelf' and insights into memory allocation.",
+  "version": "1.0.0",
   "publisher": "ELF-Ripper-DevTeam",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ELF-Ripper/elf-ripper-extension"},
+    "url": "https://github.com/hmfcpt/elf-ripper-extension"},
   "license": "MIT",
   "engines": {
     "vscode": "^1.54.0"
   },
   "categories": [
-    "Other"
+    "Other", "Debuggers"
   ],
   "activationEvents": [],
   "main": "./dist/extension.bundle.js",
