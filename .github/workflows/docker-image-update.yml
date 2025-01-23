@@ -1,7 +1,10 @@
 name: Build and Push Docker Image
 
+
 on:
   push:
+    branches:
+      - main
     paths:
       - ".devcontainer/Dockerfile"
       - ".github/workflows/docker-image-update.yml"

@@ -1,0 +1,36 @@
+name: Deploy Extension
+
+on:
+  push:
+    tags:
+      - "v[0-9]+.[0-9]+.[0-9]+"
+
+jobs:
+  publish-extension:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set Execute Permissions
+        run: chmod -R +x ./scripts
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull Docker Image
+        run: |
+          docker pull ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest
+
+      - name: Deploy Extension
+        id: deploy-extension
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/workspace \
+            ghcr.io/hmfcpt/elf-ripper-dev-test-env:latest \
+            bash -c "./scripts/deployer.sh ${{ secrets.MARKETPLACE_PAT }}"

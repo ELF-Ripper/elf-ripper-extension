@@ -10,7 +10,7 @@ const HELP_LINKS = [
   {
     label: "Review ELF Ripper extension repository...",
     description: "Check out our GitHub repository to review issues, report bugs, and contribute.",
-    url: vscode.Uri.parse("https://github.com/ELF-Ripper/elf-ripper-extension"),
+    url: vscode.Uri.parse("https://github.com/hmfcpt/elf-ripper-extension"),
   },
 ];
 
