@@ -1,7 +1,7 @@
 {
   "name": "elf-ripper",
   "displayName": "ELF-Ripper",
-  "description": "Analyze ELF files and firmware memory usage in embedded projects. Offers ELF parsing similar to 'readelf' and provides insights into memory allocation during firmware builds. Use this tool to optimize your firmware by understanding how your code utilizes memory resources!",
+  "description": "An extension for analyzing ELF files and optimizing firmware memory usage in embedded projects, featuring ELF parsing similar to 'readelf' and insights into memory allocation.",
   "version": "1.0.0",
   "publisher": "ELF-Ripper-DevTeam",
   "repository": {
